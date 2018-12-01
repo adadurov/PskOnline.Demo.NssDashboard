@@ -1,27 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientAuthComponent } from '../client-auth/client-auth.component';
-import { EmployeeSelectorComponent } from '../employee-selector/employee-selector.component';
-import { AssessmentComponent } from '../assessment/assessment.component';
+import { AuthGuard } from '../services/auth-guard.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AuthComponent } from '../auth/auth.component';
+import { PsaReportComponent } from '../psa-report/psa-report.component';
+import { NotFoundComponent } from '../not-found/not-found.component';
+
 
 const routes: Routes = [
-  {
-      path: '',
-      component: null,
-  },
-  {
-    path: '/auth',
-    component: ClientAuthComponent,
-  },
-  {
-    path: '/select',
-    component: EmployeeSelectorComponent,
-  },
-  {
-    path: '/assess',
-    component: AssessmentComponent,
-  },
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard], data: { title: 'Обзор' } },
+  { path: 'auth', component: AuthComponent, data: { title: 'Авторизация' } },
+  { path: 'psa-report', component: PsaReportComponent, canActivate: [AuthGuard], data: { title: 'Отчет' } },
+  { path: '**', component: NotFoundComponent, data: { title: 'Страница не найдена' } },
 ];
 
 @NgModule({

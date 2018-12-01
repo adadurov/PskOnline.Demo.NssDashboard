@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
-import { ClientAuthComponent } from './client-auth/client-auth.component';
-import { EmployeeSelectorComponent } from './employee-selector/employee-selector.component';
-import { AssessmentComponent } from './assessment/assessment.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthComponent } from './auth/auth.component';
+import { PsaReportComponent } from './psa-report/psa-report.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClientAuthComponent,
-    EmployeeSelectorComponent,
-    AssessmentComponent
+    DashboardComponent,
+    AuthComponent,
+    PsaReportComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

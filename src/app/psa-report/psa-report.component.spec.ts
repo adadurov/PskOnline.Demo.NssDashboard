@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientAuthComponent } from './client-auth.component';
+import { PsaReportComponent } from './psa-report.component';
 
-describe('ClientAuthComponent', () => {
-  let component: ClientAuthComponent;
-  let fixture: ComponentFixture<ClientAuthComponent>;
+describe('PsaReportComponent', () => {
+  let component: PsaReportComponent;
+  let fixture: ComponentFixture<PsaReportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClientAuthComponent ]
+      declarations: [ PsaReportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientAuthComponent);
+    fixture = TestBed.createComponent(PsaReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
