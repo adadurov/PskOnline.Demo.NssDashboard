@@ -7,6 +7,7 @@ import { catchError, switchMap, mergeMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 import { ConfigurationService } from './configuration.service';
+import { LoginResponse } from '../models/login-response.model';
 
 @Injectable()
 export class EndpointFactory {
@@ -34,7 +35,7 @@ export class EndpointFactory {
     }
 
 
-    getLoginEndpoint<T>(userName: string, password: string): Observable<T> {
+    getLoginEndpoint(userName: string, password: string): Observable<LoginResponse> {
 
         const header = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
 
@@ -47,7 +48,24 @@ export class EndpointFactory {
 
         const requestBody = params.toString();
 
-        return this.http.post<T>(this.loginUrl, requestBody, { headers: header });
+        return this.http.post<LoginResponse>(this.loginUrl, requestBody, { headers: header });
+    }
+
+    // Executes openid authentication request with client_credentials flow
+    executeClientAuthRequest(clientId: string, clientSecret: string): Observable<LoginResponse> {
+
+        const header = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+
+        const params = new HttpParams()
+            .append('grant_type', 'client_credentials')
+            .append('client_id', clientId)
+            .append('client_secret', clientSecret)
+            .append('scope', 'openid psk_dept_audit_bench')
+            .append('resource', window.location.origin);
+
+        const requestBody = params.toString();
+
+        return this.http.post<LoginResponse>(this.loginUrl, requestBody, { headers: header });
     }
 
     getRefreshLoginEndpoint<T>(): Observable<T> {

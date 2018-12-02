@@ -1,3 +1,15 @@
-<p>
-  auth works!
-</p>
+<div>
+
+  <div> 
+    <H2>Authorization component working...</H2>
+  </div>
+
+  <div *ngIf="loginInProgress && !loginFailed" id="loginInProgress">
+    <h4>Подключение к серверу и авторизация...</h4>
+  </div>
+
+  <div *ngIf="loginFailed">
+    <h4 style="color: red">Не удалось подключиться к серверу</h4>
+    <p>{{errorMessage}}</p>
+  </div>
+</div>

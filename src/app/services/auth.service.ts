@@ -36,16 +36,15 @@ export class AuthService {
     private configurations: ConfigurationService,
     private endpointFactory: EndpointFactory,
     private localStorage: LocalStoreManager) {
+
     this.initializeLoginStatus();
   }
-
 
   private initializeLoginStatus() {
     this.localStorage.getInitEvent().subscribe(() => {
       this.reevaluateLoginStatus();
     });
   }
-
 
   gotoPage(page: string, preserveParams = true) {
 
@@ -55,7 +54,6 @@ export class AuthService {
 
     this.router.navigate([page], navigationExtras);
   }
-
 
   redirectLoginUser() {
     const redirect = this.loginRedirectUrl && this.loginRedirectUrl !== '/' &&
@@ -107,16 +105,24 @@ export class AuthService {
   }
 
   login(userName: string, password: string, rememberMe?: boolean) {
-
     if (this.isLoggedIn) {
       this.logout();
     }
 
-    return this.endpointFactory.getLoginEndpoint<LoginResponse>(userName, password).pipe(
+    return this.endpointFactory.getLoginEndpoint(userName, password).pipe(
       map(response => this.processLoginResponse(response))
     );
   }
 
+  loginAsWorkplace(clientId: string, clientSecret: string) {
+    if (this.isLoggedIn) {
+      this.logout();
+    }
+
+    return this.endpointFactory.executeClientAuthRequest(clientId, clientSecret).pipe(
+      map(response => this.processLoginResponse(response))
+    );
+  }
 
   private processLoginResponse(response: LoginResponse) {
 
