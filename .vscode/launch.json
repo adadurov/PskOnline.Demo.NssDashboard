@@ -1,0 +1,15 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:4200/auth?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

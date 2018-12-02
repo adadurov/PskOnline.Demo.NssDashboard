@@ -1,5 +1,9 @@
 # PsaDemo
 
+Go to http://localhost:4200/auth?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D
+
+to debug (also set via launch.json)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
 
 ## Development server

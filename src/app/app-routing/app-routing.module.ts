@@ -9,9 +9,10 @@ import { NotFoundComponent } from '../not-found/not-found.component';
 
 
 const routes: Routes = [
+  // will be under hostname/psa-report
   { path: '', component: DashboardComponent, canActivate: [AuthGuard], data: { title: 'Обзор' } },
   { path: 'auth', component: AuthComponent, data: { title: 'Авторизация' } },
-  { path: 'psa-report', component: PsaReportComponent, canActivate: [AuthGuard], data: { title: 'Отчет' } },
+//  { path: 'psa-report', component: PsaReportComponent, canActivate: [AuthGuard], data: { title: 'Отчет' } },
   { path: '**', component: NotFoundComponent, data: { title: 'Страница не найдена' } },
 ];
 
