@@ -5,6 +5,7 @@ import { AppTranslationService } from './app-translation.service';
 import { LocalStoreManager } from './local-store-manager.service';
 import { DBkeys } from './db-keys';
 import { Utilities } from './utilities';
+import { stringify } from 'querystring';
 
 
 
@@ -27,16 +28,24 @@ export class ConfigurationService {
     public static readonly defaultShowDashboardBanner: boolean = true;
     // ***End of defaults***
 
-    public baseUrl: string = Utilities.baseUrl();
-    public fallbackBaseUrl = 'http://psk-online.ru';
-    public loginUrl = '/login';
+    public _baseUrl: string = Utilities.baseUrl();
+    public fallbackBaseUrl = 'https://test.psk-online.ru';
+    public loginUrl = '/auth';
 
 
     private _language: string = null;
-    private _homeUrl = '/home';
+    private _homeUrl = '/';
 
     constructor(private localStorage: LocalStoreManager, private translationService: AppTranslationService) {
         this.loadLocalChanges();
+    }
+
+    get baseUrl() {
+        const url = Utilities.baseUrl();
+        if (url.includes('localhost')) {
+            return this.fallbackBaseUrl;
+        }
+        return url;
     }
 
     private loadLocalChanges() {
