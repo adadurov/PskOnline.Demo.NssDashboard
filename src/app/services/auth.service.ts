@@ -66,7 +66,8 @@ export class AuthService {
     const navigationExtras: NavigationExtras = {
       fragment: urlParamsAndFragment.secondPart,
       queryParams: Utilities.getQueryParamsFromString(urlAndParams.secondPart),
-      queryParamsHandling: 'merge'
+      // do not merge these parameters with the sensitive auth parameters passed to the auth URL
+      queryParamsHandling: ''
     };
 
     this.router.navigate([urlAndParams.firstPart], navigationExtras);

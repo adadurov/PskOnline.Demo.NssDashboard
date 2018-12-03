@@ -71,7 +71,7 @@ export class AuthComponent implements OnInit, OnDestroy {
             this.loginInProgress = false;
             this.reset();
           }, 500);
-          console.log('Logged in as: ' + user.toString());
+          console.log('Logged in as: ' + user.id.toString());
         },
         error => {
           this.loginInProgress = false;
@@ -85,8 +85,8 @@ export class AuthComponent implements OnInit, OnDestroy {
             } else {
               this.errorMessage = error.statusText || error.status;
             }
-            this.loginFailed = true;
           }
+          this.loginFailed = true;
           setTimeout(() => {
             this.loginInProgress = false;
           }, 500);
