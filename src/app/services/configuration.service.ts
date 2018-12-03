@@ -34,7 +34,7 @@ export class ConfigurationService {
 
 
     private _language: string = null;
-    private _homeUrl = '/';
+    private readonly _homeUrl = '/';
 
     constructor(private localStorage: LocalStoreManager, private translationService: AppTranslationService) {
         this.loadLocalChanges();
@@ -88,7 +88,6 @@ export class ConfigurationService {
 
     public clearLocalChanges() {
         this._language = null;
-        this._homeUrl = null;
 
         this.localStorage.deleteData(DBkeys.LANGUAGE);
 

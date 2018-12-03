@@ -132,7 +132,7 @@ export class Utilities {
     }
 
 
-
+    // Extracts query parameters from string, decoding each value using decodeURIComponent
     public static getQueryParamsFromString(paramString: string) {
 
         if (!paramString) {
@@ -143,7 +143,7 @@ export class Utilities {
 
         for (const param of paramString.split('&')) {
             const keyValue = Utilities.splitInTwo(param, '=');
-            params[keyValue.firstPart] = keyValue.secondPart;
+            params[keyValue.firstPart] = decodeURIComponent(keyValue.secondPart);
         }
 
         return params;

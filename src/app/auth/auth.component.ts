@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Utilities } from '../services/utilities';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
   public loginInProgress = true;
 
@@ -20,6 +20,8 @@ export class AuthComponent implements OnInit {
 
   private clientSecret: string = null;
 
+  loginStatusSubscription: any;
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService) {
@@ -29,6 +31,11 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     if (this.clientId !== null && this.clientId !== '' && this.clientSecret !== null && this.clientSecret !== '' ) {
+      this.loginStatusSubscription = this.authService.getLoginStatusEvent().subscribe(isLoggedIn => {
+        if (this.getShouldRedirect()) {
+          this.authService.redirectLoginUser();
+        }
+      });
       this.login();
     } else {
       this.loginFailed = true;
@@ -39,7 +46,17 @@ export class AuthComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.loginStatusSubscription) {
+      this.loginStatusSubscription.unsubscribe();
+    }
+  }
+
   reset(): void {
+  }
+
+  getShouldRedirect() {
+    return this.authService.isLoggedIn && !this.authService.isSessionExpired;
   }
 
   login() {
