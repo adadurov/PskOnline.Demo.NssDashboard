@@ -1,6 +1,6 @@
 
 import { Injectable, Injector } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse, HttpUrlEncodingCodec } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, switchMap, mergeMap } from 'rxjs/operators';
@@ -8,6 +8,16 @@ import { catchError, switchMap, mergeMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ConfigurationService } from './configuration.service';
 import { LoginResponse } from '../models/login-response.model';
+
+class CustomEncoder extends HttpUrlEncodingCodec {
+    encodeKey(key: string): string {
+      return encodeURIComponent(key);
+    }
+
+    encodeValue(value: string): string {
+      return encodeURIComponent(value);
+    }
+  }
 
 @Injectable()
 export class EndpointFactory {
@@ -56,7 +66,9 @@ export class EndpointFactory {
 
         const header = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
 
-        const params = new HttpParams()
+        // use CustomEncoder to work around the following Google's bug:
+        // https://github.com/angular/angular/issues/18261
+        const params = new HttpParams({encoder: new CustomEncoder()})
             .append('grant_type', 'client_credentials')
             .append('client_id', clientId)
             .append('client_secret', clientSecret)
