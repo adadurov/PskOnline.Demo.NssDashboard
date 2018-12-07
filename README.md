@@ -1,14 +1,18 @@
-# PsaDemo
+# NSS Dashboard Demo
 
-Go to http://localhost:4200/auth?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D
+This project demonstrates the concept of 1-click NSS workpace with 'workplace tokens'.
 
-to debug (also set via launch.json)
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
+It was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve --serve-path nss-dashboard` for a dev server. Navigate to `http://localhost:4200/nss-dashboard/?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D`. The app will automatically reload if you change any of the source files.
+
+## Deployment
+
+To deploy, configure your web server to serve the files from the /dist directory at the location /nss-dashboard/
+
+If you need to change that, remember to update index.html (and also debugging config in launch.json).
 
 ## Code scaffolding
 
