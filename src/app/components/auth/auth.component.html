@@ -1,0 +1,26 @@
+<div class="vertical-center-flex">
+  <div class="login-container center-block">
+    <div class="panel panel-primary boxshadow">
+      <div class="panel-heading">
+
+      </div>
+      <div class="panel-body">
+        <div class="col-md-8 col-md-offset-2">
+
+          <div *ngIf="loginInProgress" id="loginInProgress">
+            <h4>Выполняется подключение и авторизация на сервере. Пожалуйста, подождите.</h4>
+          </div>
+
+          <div *ngIf="!loginInProgress && loginFailed">
+            <h4 style="color: red">Не удалось подключиться к серверу</h4>
+            <p>{{errorMessage}}</p>
+          </div>
+
+          <div *ngIf="!loginInProgress && !loginFailed">
+            <h4>Авторизация выполнена. Ожидайте переход на страницу просмотра отчетов.</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
