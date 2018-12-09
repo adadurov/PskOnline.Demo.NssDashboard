@@ -3,7 +3,7 @@ export class User {
   constructor(
     id?: string, userName?: string, firstName?: string, lastName?: string,
     patronymic?: string, email?: string, jobTitle?: string, phoneNumber?: string,
-    tenantId?: string) {
+    tenantId?: string, departmentId?: string, branchOfficeId?: string) {
 
         this.id = id;
         this.userName = userName;
@@ -41,6 +41,9 @@ export class User {
     public phoneNumber: string;
     public isEnabled: boolean;
     public isLockedOut: boolean;
-    public isDepartmentSpecialUser: string;
     public tenantId: string;
+
+    public departmentId: string;
+    public branchOfficeId: string;
+    public scopes: string;
 }
