@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { MatProgressSpinnerModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +19,7 @@ import { AppTranslationService, TranslateLanguageLoader } from './services/app-t
 @NgModule({
   imports: [
     BrowserModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     NgbModule.forRoot(),
     AppRoutingModule,

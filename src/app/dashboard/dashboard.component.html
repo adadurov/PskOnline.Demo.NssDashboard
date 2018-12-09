@@ -2,6 +2,27 @@
   dashboard works!
 </p>
 
+<div class="container"
+     fxLayout="column"
+     fxLayoutGap="10px">
+
+  <div fxFlex>
+    <div>
+      <h3>Menu</h3>
+      <hr>
+    </div>
+  </div>
+
+  <div fxFlex *ngIf="departments">
+    <app-psa-report [departmentId]=aDept></app-psa-report>
+  </div>
+
+  <div fxFlex [hidden]="departments">
+    <mat-spinner aligh="center"> </mat-spinner>
+    <h4 aligh="center">Подождите, идет загрузка...</h4>
+  </div>     
+</div>
+
 <div class="container">
   <table class="table table-dark table-hover table-striped">
     <thead class="thead-light">
