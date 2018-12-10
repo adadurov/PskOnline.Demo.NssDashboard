@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { Department } from '../models/department';
+import { Department } from '../models/department.model';
 import { Observable } from 'rxjs';
 import { EndpointFactory } from './endpoint-factory.service';
 import { catchError } from 'rxjs/operators';

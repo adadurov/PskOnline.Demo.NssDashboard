@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
-import { BranchOffice } from '../models/branch-office';
+import { BranchOffice } from '../models/branch-office.model';
 import { EndpointFactory } from './endpoint-factory.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';

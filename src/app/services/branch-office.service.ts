@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BranchOfficeEndpointService } from './branch-office-endpoint.service';
 import { Observable } from 'rxjs';
-import { BranchOffice } from '../models/branch-office';
+import { BranchOffice } from '../models/branch-office.model';
 
 @Injectable({
   providedIn: 'root'

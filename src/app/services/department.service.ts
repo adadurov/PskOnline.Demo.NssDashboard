@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DepartmentEndpointService } from './department-endpoint.service';
-import { Department } from '../models/department';
+import { Department } from '../models/department.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
