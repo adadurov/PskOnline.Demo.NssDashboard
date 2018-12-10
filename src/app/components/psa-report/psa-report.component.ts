@@ -66,6 +66,16 @@ export class PsaReportComponent implements OnInit {
       );
   }
 
+  hasDataToDisplay(): boolean {
+    if (!this.summaryGroupsByEmployee) {
+      return false;
+    }
+    if (this.summaryGroupsByEmployee == null) {
+      return false;
+    }
+    return this.summaryGroupsByEmployee.length > 0;
+  }
+
   groupByEmployeeId(xs: PsaSummary[]): {key: any, values: PsaSummary[]}[] {
     return xs.reduce( (rv, x) => {
       const v = x.employee.id;
