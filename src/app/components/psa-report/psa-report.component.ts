@@ -10,6 +10,9 @@ import { PsaFinalConclusion } from 'src/app/psa-models/psa-final-conclusion';
 import { RusHydroEmployee } from 'src/app/psa-models/rushydro-employee';
 import { EmployeeSummaryGroup } from 'src/app/psa-models/employee-summary-group';
 import { Summary } from '@angular/compiler';
+import { DepartmentService } from 'src/app/services/department.service';
+import { BranchOfficeService } from 'src/app/services/branch-office.service';
+import { observable, forkJoin, Observable, concat, of } from 'rxjs';
 
 @Component({
   selector: 'app-psa-report',
@@ -19,24 +22,50 @@ import { Summary } from '@angular/compiler';
 export class PsaReportComponent implements OnInit {
 
   @Input()
-  public departmentId: string;
+  public departmentId: string = null;
+
+  @Input()
+  public branchId: string = null;
+
+  public branchName = '';
+
+  public deptName = '';
 
   public summaryGroupsByEmployee: EmployeeSummaryGroup[] = null;
 
   public psaReport: PsaReport;
 
   constructor(
-    private psaService: PsaReportService
+    private psaService: PsaReportService,
+    private deptService: DepartmentService,
+    private branchService: BranchOfficeService
     ) {
   }
 
   ngOnInit() {
-    this.psaReport = this.getDesignTimeReportForCurrentShift();
-    // this.psaService.getReportForCurrentShift(this.departmentId)
-    //   .toPromise()
-    //   .then( report => this.psaReport = report );
+    if (this.departmentId === null ||
+        this.branchId === null ) {
+      console.warn('Department ID or Branch ID was not specified');
+      return;
+    }
 
-    this.summaryGroupsByEmployee = this.groupSummaries(this.psaReport);
+    forkJoin(
+      this.branchService.getBranchOffice(this.branchId),
+      this.deptService.getDepartment(this.departmentId),
+      this.getReportForCurrentShift(this.departmentId)
+      )
+      .subscribe(
+        items => {
+          this.branchName = items[0].name;
+          this.deptName = items[1].name;
+          this.psaReport = items[2];
+          this.summaryGroupsByEmployee = this.groupSummaries(this.psaReport);
+        },
+        error => {
+          console.error(error);
+          throw error;
+        }
+      );
   }
 
   groupByEmployeeId(xs: PsaSummary[]): {key: any, values: PsaSummary[]}[] {
@@ -76,7 +105,12 @@ export class PsaReportComponent implements OnInit {
     return empSumGroups;
   }
 
-  private getDesignTimeReportForCurrentShift(): any {
+  private getReportForCurrentShift(deptId: string): Observable<PsaReport> {
+    // return this.psaService.getReportForCurrentShift(deptId);
+    return of(this.getDesignTimeReportForCurrentShift());
+  }
+
+  private getDesignTimeReportForCurrentShift(): PsaReport {
 
     const branchOfficeId = '24098234092';
     const departmentId = '03498263223';
@@ -84,11 +118,25 @@ export class PsaReportComponent implements OnInit {
     const completionTime = new Date();
     const workingShiftDate = new Date();
 
-    const anEmployee: RusHydroEmployee = {
+    const employee1: RusHydroEmployee = {
       externalId: '123',
       fullName: 'Перельман Игорь Витальевич',
       id: '2298345',
       positionName: 'Электромонтер главного щита управления',
+    };
+
+    const employee2: RusHydroEmployee = {
+      externalId: '123',
+      fullName: 'Михайлов Александрович Романович',
+      id: '983459282',
+      positionName: 'Начальник смены цеха',
+    };
+
+    const employee3: RusHydroEmployee = {
+      externalId: '123',
+      fullName: 'Кравцов Виталий Андреевич',
+      id: '345122',
+      positionName: 'Машинист гидротурбинного оборудования',
     };
 
     const aFinalConclusion: PsaFinalConclusion = {
@@ -123,15 +171,52 @@ export class PsaReportComponent implements OnInit {
       meanHR: 89.1
     };
 
-    const aSummary: PsaSummary = {
+    const aBadSummary: PsaSummary = {
       id: 'sldf0202947398754',
       inspectionId: 'qwertuyuiop',
       branchOfficeId: branchOfficeId,
       departmentId: departmentId,
       hostName: 'sb12345',
       toolVersion: 'PskOnline.Client.Demo/0.1.7',
-      employee: anEmployee,
+      employee: employee3,
       finalConclusion: aFinalConclusion,
+      svmrConclusion: anSvmrConclusion,
+      hrvConclusion: anHrvConclusion,
+      workingShiftNumber: 1,
+      completionTime: completionTime,
+      workingShiftDate: workingShiftDate
+    };
+
+    const aBetterSummary: PsaSummary = {
+      id: 'sldf0202947398754',
+      inspectionId: 'qwertuyuiop',
+      branchOfficeId: branchOfficeId,
+      departmentId: departmentId,
+      hostName: 'sb12345',
+      toolVersion: 'PskOnline.Client.Demo/0.1.7',
+      employee: employee2,
+      finalConclusion: aFinalConclusion,
+      svmrConclusion: anSvmrConclusion,
+      hrvConclusion: anHrvConclusion,
+      workingShiftNumber: 1,
+      completionTime: completionTime,
+      workingShiftDate: workingShiftDate
+    };
+
+    const theBestSummary: PsaSummary = {
+      id: 'sldf0202947398754',
+      inspectionId: 'qwertuyuiop',
+      branchOfficeId: branchOfficeId,
+      departmentId: departmentId,
+      hostName: 'sb12345',
+      toolVersion: 'PskOnline.Client.Demo/0.1.7',
+      employee: employee1,
+      finalConclusion: {
+        color: '00dd00',
+        comment: '',
+        status: PsaStatus.Pass,
+        text: 'Полностью соответствует'
+      },
       svmrConclusion: anSvmrConclusion,
       hrvConclusion: anHrvConclusion,
       workingShiftNumber: 1,
@@ -142,13 +227,13 @@ export class PsaReportComponent implements OnInit {
     return {
       branchOfficeId: branchOfficeId,
       departmentId: departmentId,
-      branchOfficeName: 'ПСК-Онлайн',
-      departmentName: 'Демо-ГЭС',
+      branchOfficeName: 'Демо ГЭС',
+      departmentName: 'Турбинный цех',
       shiftDate: workingShiftDate,
       shiftName: 'день',
       shiftNumber: 1,
       shiftStartTime: '07:00:00.000',
-      summaries: [ aSummary ]
+      summaries: [ aBadSummary, aBetterSummary, theBestSummary ]
     };
   }
 }

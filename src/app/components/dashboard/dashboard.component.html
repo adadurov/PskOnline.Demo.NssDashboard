@@ -3,12 +3,12 @@
      fxLayoutGap="10px">
 
   <div style="margin-top: 15px">
-    <H3>НАЗВАНИЕ ПРЕДПРИЯТИЯ</H3>
+    <H3>{{ organizationName | uppercase }}</H3>
     <hr>
   </div>
 
   <div fxFlex *ngIf="departments">
-    <app-psa-report [departmentId]=aDept></app-psa-report>
+    <app-psa-report [departmentId]="departments[0]" [branchId]="branchId"></app-psa-report>
   </div>
 
   <div fxFlex [hidden]="departments">

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { TenantService } from 'src/app/services/tenant.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,14 +9,19 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DashboardComponent implements OnInit {
 
-  // bound to a template item
+  @Output()
+  public organizationName = '';
+
+  @Output()
   public departments: string[];
 
-  constructor(
-    private authService: AuthService
-  ) { }
+  @Output()
+  public branchId: string;
 
-  ngOnInit() {
+  constructor(
+    private authService: AuthService,
+    private tenantService: TenantService
+  ) {
     // set the departmentId of the current PsaReportComponent
     // to the departmentId of the current identity
 
@@ -23,5 +29,12 @@ export class DashboardComponent implements OnInit {
     const departmentId = user.departmentId;
 
     this.departments = [ departmentId ];
+    this.branchId = user.branchOfficeId;
+    this.tenantService.getTenantSharedInfo(user.tenantId).subscribe(
+      result => this.organizationName = result.name
+    );
+  }
+
+  ngOnInit() {
   }
 }

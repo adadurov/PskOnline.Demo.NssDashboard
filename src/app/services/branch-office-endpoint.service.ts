@@ -19,12 +19,12 @@ export class BranchOfficeEndpointService extends EndpointFactory {
 
   get fullUrl() { return this.configurations.baseUrl + this._url; }
 
-  public getBranchOffice(deptId: string): Observable<BranchOffice> {
-    const endpointUrl = `${this.fullUrl}/${deptId}`;
+  public getBranchOffice(branchId: string): Observable<BranchOffice> {
+    const endpointUrl = `${this.fullUrl}/${branchId}`;
 
     return this.http.get<BranchOffice>(endpointUrl, this.getRequestHeaders()).pipe(
       catchError(error => {
-        return this.handleError(error, () => this.getBranchOffice(deptId));
+        return this.handleError(error, () => this.getBranchOffice(branchId));
       })
       );
 

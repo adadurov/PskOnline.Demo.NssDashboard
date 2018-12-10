@@ -14,6 +14,8 @@ export interface IdToken {
     lastName: string;
     patronymic: string;
     tenantId: string;
+    departmentId: string;
+    branchOfficeId: string;
     jobtitle: string;
     email: string;
     phone: string;

@@ -3,7 +3,7 @@ export class User {
   constructor(
     id?: string, userName?: string, firstName?: string, lastName?: string,
     patronymic?: string, email?: string, jobTitle?: string, phoneNumber?: string,
-    tenantId?: string, departmentId?: string, branchOfficeId?: string) {
+    tenantId?: string, branchOfficeId?: string, departmentId?: string) {
 
         this.id = id;
         this.userName = userName;
@@ -14,6 +14,8 @@ export class User {
         this.jobTitle = jobTitle;
         this.phoneNumber = phoneNumber;
         this.tenantId = tenantId;
+        this.branchOfficeId = branchOfficeId;
+        this.departmentId = departmentId;
     }
 
     get friendlyName(): string {
@@ -42,8 +44,7 @@ export class User {
     public isEnabled: boolean;
     public isLockedOut: boolean;
     public tenantId: string;
-
-    public departmentId: string;
     public branchOfficeId: string;
+    public departmentId: string;
     public scopes: string;
 }

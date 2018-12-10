@@ -158,7 +158,9 @@ export class AuthService {
       decodedIdToken.email,
       decodedIdToken.jobtitle,
       decodedIdToken.phone,
-      decodedIdToken.tenantId
+      decodedIdToken.tenantId,
+      decodedIdToken.branchOfficeId,
+      decodedIdToken.departmentId,
     );
     user.isEnabled = true;
     this.saveUserDetails(user, accessToken, idToken, refreshToken, accessTokenExpiry);
