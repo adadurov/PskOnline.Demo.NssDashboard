@@ -109,6 +109,10 @@ export class PsaReportComponent implements OnInit {
       empSumGroup.otherItems = element.values.splice(element.values.indexOf(empSumGroup.bestItem), 1);
       empSumGroup.employee = empSumGroup.bestItem.employee;
       return empSumGroup;
+    })
+    // sort by full name
+    .sort( (sg1, sg2) => {
+       return sg1.employee.fullName.localeCompare(sg2.employee.fullName);
     });
     return empSumGroups;
   }
