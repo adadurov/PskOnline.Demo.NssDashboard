@@ -8,6 +8,8 @@ It was generated with [Angular CLI](https://github.com/angular/angular-cli) vers
 
 Run `ng serve --serve-path nss-dashboard` for a dev server. Navigate to `http://localhost:4200/nss-dashboard/?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D`. The app will automatically reload if you change any of the source files.
 
+To use the app with some static report data, add the 'use_static_data=1' query parameter to the entry URL.
+
 ## Deployment
 
 To deploy, configure your web server to serve the files from the /dist directory at the location /nss-dashboard/

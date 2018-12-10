@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { of, Observable } from 'rxjs';
 import { PsaReport } from '../../psa-models/psa-report';
 import { PsaReportService } from '../../services/psa-report.service';
 import { PsaStatus } from '../../psa-models/psa-status';
@@ -9,10 +10,7 @@ import { HrvPreShiftConclusion } from 'src/app/psa-models/hrv-pre-shift-conclusi
 import { PsaFinalConclusion } from 'src/app/psa-models/psa-final-conclusion';
 import { RusHydroEmployee } from 'src/app/psa-models/rushydro-employee';
 import { EmployeeSummaryGroup } from 'src/app/psa-models/employee-summary-group';
-import { Summary } from '@angular/compiler';
-import { DepartmentService } from 'src/app/services/department.service';
-import { BranchOfficeService } from 'src/app/services/branch-office.service';
-import { observable, forkJoin, Observable, concat, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-psa-report',
@@ -35,11 +33,17 @@ export class PsaReportComponent implements OnInit {
 
   public psaReport: PsaReport;
 
+  private useStaticData = false;
+
   constructor(
     private psaService: PsaReportService,
-    private deptService: DepartmentService,
-    private branchService: BranchOfficeService
+    private router: Router
     ) {
+    // If there is a 'use_static_data' argument in the query component of the path,
+    // use a static data to display the report
+    // this is useful for development
+    const tree = this.router.parseUrl(router.url);
+    this.useStaticData = tree.queryParamMap.has('use_static_data');
   }
 
   ngOnInit() {
@@ -49,16 +53,10 @@ export class PsaReportComponent implements OnInit {
       return;
     }
 
-    forkJoin(
-      this.branchService.getBranchOffice(this.branchId),
-      this.deptService.getDepartment(this.departmentId),
-      this.getReportForCurrentShift(this.departmentId)
-      )
+    this.getReportForCurrentShift(this.departmentId)
       .subscribe(
-        items => {
-          this.branchName = items[0].name;
-          this.deptName = items[1].name;
-          this.psaReport = items[2];
+        result => {
+          this.psaReport = result;
           this.summaryGroupsByEmployee = this.groupSummaries(this.psaReport);
         },
         error => {
@@ -106,8 +104,11 @@ export class PsaReportComponent implements OnInit {
   }
 
   private getReportForCurrentShift(deptId: string): Observable<PsaReport> {
-    // return this.psaService.getReportForCurrentShift(deptId);
-    return of(this.getDesignTimeReportForCurrentShift());
+    if (this.useStaticData) {
+      return of(this.getDesignTimeReportForCurrentShift());
+    } else {
+      return this.psaService.getReportForCurrentShift(deptId);
+    }
   }
 
   getClassNameForStatus(summary: PsaSummary): string {

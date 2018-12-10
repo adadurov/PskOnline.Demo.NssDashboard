@@ -5,7 +5,6 @@ import { AuthService } from './auth.service';
 import { Utilities } from './utilities';
 import { HttpParams } from '@angular/common/http';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -70,7 +69,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         const postLoginQueryParams = new HttpParams({fromObject : postLoginQueryItems});
 
         // when redirecting back, drop the authentication parameters
-        this.authService.loginRedirectUrl = urlAndParams.firstPart + postLoginQueryParams.toString();
+        this.authService.loginRedirectUrl = urlAndParams.firstPart + '?' + postLoginQueryParams.toString();
 
         // use the parameters to log in
         this.router.navigate(['/auth'], authQueryParams);
