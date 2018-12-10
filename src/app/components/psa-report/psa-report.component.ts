@@ -110,6 +110,18 @@ export class PsaReportComponent implements OnInit {
     return of(this.getDesignTimeReportForCurrentShift());
   }
 
+  getClassNameForStatus(summary: PsaSummary): string {
+    const status = summary.finalConclusion.status;
+    if (status === PsaStatus.Fail) {
+      return 'td-psa-fail';
+    } else if (status === PsaStatus.Conditional_Pass) {
+      return 'td-psa-cond-pass';
+    } else if (status === PsaStatus.Pass) {
+      return 'td-psa-pass';
+    }
+    return 'td-psa-unknown';
+  }
+
   private getDesignTimeReportForCurrentShift(): PsaReport {
 
     const branchOfficeId = '24098234092';
@@ -179,7 +191,12 @@ export class PsaReportComponent implements OnInit {
       hostName: 'sb12345',
       toolVersion: 'PskOnline.Client.Demo/0.1.7',
       employee: employee3,
-      finalConclusion: aFinalConclusion,
+      finalConclusion: {
+        color: '00dd00',
+        comment: '',
+        status: PsaStatus.Fail,
+        text: 'НЕ СООТВЕТСТВУЕТ'
+      },
       svmrConclusion: anSvmrConclusion,
       hrvConclusion: anHrvConclusion,
       workingShiftNumber: 1,

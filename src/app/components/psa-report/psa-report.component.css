@@ -1,0 +1,15 @@
+td.td-psa-fail {
+    background-color: lightpink;
+}
+
+td.td-psa-cond-pass {
+    background-color: palegoldenrod;
+}
+
+td.td-psa-pass {
+    background-color: lightgreen;
+}
+
+td.td-psa-unknown {
+    background-color: lightgray;
+}

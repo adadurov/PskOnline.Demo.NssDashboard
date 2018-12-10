@@ -27,7 +27,8 @@
         <td>{{empSumGroup.bestItem.employee.fullName}}</td>
         <td>{{empSumGroup.bestItem.employee.positionName}}</td>
         <td>{{empSumGroup.bestItem.completionTime | date: 'shortDate'}} {{empSumGroup.bestItem.completionTime | date: 'shortTime'}}</td>
-        <td>{{empSumGroup.bestItem.finalConclusion.text}}</td>
+        <td [class]="getClassNameForStatus(empSumGroup.bestItem)"
+          >{{empSumGroup.bestItem.finalConclusion.text}}</td>
 
       </tr>
     </tbody>
