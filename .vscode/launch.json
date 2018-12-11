@@ -13,6 +13,7 @@
             "name": "Launch Chrome against localhost",
 //            "url": "http://localhost:4200/nss-dashboard/?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D&use_static_data",
             "url": "http://localhost:4200/nss-dashboard/?client_id=dept_workplaceuylafH8stkC7e%2BW2z0IrHA%3D%3D&client_secret=MhvJtRE5Tki972kjWzUAvA%3D%3D",
+//            "url": "http://localhost:4200/nss-dashboard",
             "webRoot": "${workspaceFolder}"
         }
     ]

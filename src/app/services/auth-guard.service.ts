@@ -18,7 +18,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         const urlParamsAndFragment = Utilities.splitInTwo(url, '#');
         const urlAndParams = Utilities.splitInTwo(urlParamsAndFragment.firstPart, '?');
 
-        const originalQueryParams = Utilities.getQueryParamsFromString(urlAndParams.secondPart);
+        let originalQueryParams = Utilities.getQueryParamsFromString(urlAndParams.secondPart);
+        if (!originalQueryParams) {
+            originalQueryParams = {};
+        }
 
         const postLoginQueryItems = this.copyObjectWithFilter(originalQueryParams, (value, propName) => {
             return value.hasOwnProperty(propName) && propName !== 'client_id' && propName !== 'client_secret';
