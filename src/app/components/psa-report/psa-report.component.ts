@@ -3,14 +3,11 @@ import { of, Observable } from 'rxjs';
 import { PsaReport } from '../../psa-models/psa-report';
 import { PsaReportService } from '../../services/psa-report.service';
 import { PsaStatus } from '../../psa-models/psa-status';
-import { LSR_HrvFunctionalState } from '../../psa-models/lsr-hrv-functional-state';
-import { SvmrPreShiftConclusion } from '../../psa-models/svmr-pre-shift-conclusion';
 import { PsaSummary } from '../../psa-models/psa-summary';
-import { HrvPreShiftConclusion } from 'src/app/psa-models/hrv-pre-shift-conclusion';
-import { PsaFinalConclusion } from 'src/app/psa-models/psa-final-conclusion';
-import { RusHydroEmployee } from 'src/app/psa-models/rushydro-employee';
 import { EmployeeSummaryGroup } from 'src/app/psa-models/employee-summary-group';
 import { Router } from '@angular/router';
+import { isNullOrUndefined } from 'util';
+import { StaticData } from './static-data';
 
 @Component({
   selector: 'app-psa-report',
@@ -33,7 +30,9 @@ export class PsaReportComponent implements OnInit {
 
   public psaReport: PsaReport;
 
-  private useStaticData = false;
+  private _useStaticData = false;
+
+  private _error: any;
 
   constructor(
     private psaService: PsaReportService,
@@ -43,7 +42,7 @@ export class PsaReportComponent implements OnInit {
     // use a static data to display the report
     // this is useful for development
     const tree = this.router.parseUrl(router.url);
-    this.useStaticData = tree.queryParamMap.has('use_static_data');
+    this._useStaticData = tree.queryParamMap.has('use_static_data');
   }
 
   ngOnInit() {
@@ -61,19 +60,20 @@ export class PsaReportComponent implements OnInit {
         },
         error => {
           console.error(error);
-          throw error;
+          this._error = error;
         }
       );
   }
 
   hasDataToDisplay(): boolean {
-    if (!this.summaryGroupsByEmployee) {
-      return false;
-    }
-    if (this.summaryGroupsByEmployee == null) {
+    if (isNullOrUndefined(this.summaryGroupsByEmployee)) {
       return false;
     }
     return this.summaryGroupsByEmployee.length > 0;
+  }
+
+  hasError(): boolean {
+    return ! isNullOrUndefined(this._error);
   }
 
   groupByEmployeeId(xs: PsaSummary[]): {key: any, values: PsaSummary[]}[] {
@@ -118,7 +118,7 @@ export class PsaReportComponent implements OnInit {
   }
 
   private getReportForCurrentShift(deptId: string): Observable<PsaReport> {
-    if (this.useStaticData) {
+    if (this._useStaticData) {
       return of(this.getDesignTimeReportForCurrentShift());
     } else {
       return this.psaService.getReportForCurrentShift(deptId);
@@ -138,134 +138,6 @@ export class PsaReportComponent implements OnInit {
   }
 
   private getDesignTimeReportForCurrentShift(): PsaReport {
-
-    const branchOfficeId = '24098234092';
-    const departmentId = '03498263223';
-
-    const completionTime = new Date();
-    const workingShiftDate = new Date();
-
-    const employee1: RusHydroEmployee = {
-      externalId: '123',
-      fullName: 'Перельман Игорь Витальевич',
-      id: '2298345',
-      positionName: 'Электромонтер главного щита управления',
-    };
-
-    const employee2: RusHydroEmployee = {
-      externalId: '123',
-      fullName: 'Михайлов Александрович Романович',
-      id: '983459282',
-      positionName: 'Начальник смены цеха',
-    };
-
-    const employee3: RusHydroEmployee = {
-      externalId: '123',
-      fullName: 'Кравцов Виталий Андреевич',
-      id: '345122',
-      positionName: 'Машинист гидротурбинного оборудования',
-    };
-
-    const aFinalConclusion: PsaFinalConclusion = {
-      color: '00bbbb',
-      comment: '',
-      status: PsaStatus.Conditional_Pass,
-      text: 'Частично соответствует'
-    };
-
-    const anSvmrConclusion: SvmrPreShiftConclusion = {
-      testId: 'aowei20234',
-      color: '00bbbb',
-      comment: '',
-      status: PsaStatus.Conditional_Pass,
-      text: 'Условно пройдено',
-      meanResponseTimeMSec: 239,
-      ipN1: 63.9
-    };
-
-    const anHrvConclusion: HrvPreShiftConclusion = {
-      testId: 'aowei20234',
-      color: '00bbbb',
-      comment: '',
-      status: PsaStatus.Conditional_Pass,
-      text: 'Условно пройдено',
-      in: 123.4,
-      vsr: 0.35,
-      lsr: LSR_HrvFunctionalState.Acceptable_3,
-      lsR_Text: 'Приемлемое',
-      stateMatrixCol: 2,
-      stateMatrixRow: 2,
-      meanHR: 89.1
-    };
-
-    const aBadSummary: PsaSummary = {
-      id: 'sldf0202947398754',
-      inspectionId: 'qwertuyuiop',
-      branchOfficeId: branchOfficeId,
-      departmentId: departmentId,
-      hostName: 'sb12345',
-      toolVersion: 'PskOnline.Client.Demo/0.1.7',
-      employee: employee3,
-      finalConclusion: {
-        color: '00dd00',
-        comment: '',
-        status: PsaStatus.Fail,
-        text: 'НЕ СООТВЕТСТВУЕТ'
-      },
-      svmrConclusion: anSvmrConclusion,
-      hrvConclusion: anHrvConclusion,
-      workingShiftNumber: 1,
-      completionTime: completionTime,
-      workingShiftDate: workingShiftDate
-    };
-
-    const aBetterSummary: PsaSummary = {
-      id: 'sldf0202947398754',
-      inspectionId: 'qwertuyuiop',
-      branchOfficeId: branchOfficeId,
-      departmentId: departmentId,
-      hostName: 'sb12345',
-      toolVersion: 'PskOnline.Client.Demo/0.1.7',
-      employee: employee2,
-      finalConclusion: aFinalConclusion,
-      svmrConclusion: anSvmrConclusion,
-      hrvConclusion: anHrvConclusion,
-      workingShiftNumber: 1,
-      completionTime: completionTime,
-      workingShiftDate: workingShiftDate
-    };
-
-    const theBestSummary: PsaSummary = {
-      id: 'sldf0202947398754',
-      inspectionId: 'qwertuyuiop',
-      branchOfficeId: branchOfficeId,
-      departmentId: departmentId,
-      hostName: 'sb12345',
-      toolVersion: 'PskOnline.Client.Demo/0.1.7',
-      employee: employee1,
-      finalConclusion: {
-        color: '00dd00',
-        comment: '',
-        status: PsaStatus.Pass,
-        text: 'Полностью соответствует'
-      },
-      svmrConclusion: anSvmrConclusion,
-      hrvConclusion: anHrvConclusion,
-      workingShiftNumber: 1,
-      completionTime: completionTime,
-      workingShiftDate: workingShiftDate
-    };
-
-    return {
-      branchOfficeId: branchOfficeId,
-      departmentId: departmentId,
-      branchOfficeName: 'Демо ГЭС',
-      departmentName: 'Турбинный цех',
-      shiftDate: workingShiftDate,
-      shiftName: 'день',
-      shiftNumber: 1,
-      shiftStartTime: '07:00:00.000',
-      summaries: [ aBadSummary, aBetterSummary, theBestSummary ]
-    };
+    return StaticData.REPORT;
   }
 }
