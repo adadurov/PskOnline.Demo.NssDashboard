@@ -60,6 +60,8 @@ export class AuthService {
       this.loginRedirectUrl !== ConfigurationService.defaultHomeUrl ? this.loginRedirectUrl : this.homeUrl;
     this.loginRedirectUrl = null;
 
+    console.log('AuthService: redirecting to: ' + redirect);
+
     const urlParamsAndFragment = Utilities.splitInTwo(redirect, '#');
     const urlAndParams = Utilities.splitInTwo(urlParamsAndFragment.firstPart, '?');
 
